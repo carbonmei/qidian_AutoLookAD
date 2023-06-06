@@ -97,7 +97,7 @@ function readBooks() {
   // 定义一个函数，用于随机选择一个按钮并点击
   function chooseBook() {
     // 随机生成一个索引值
-    var index = random(0, books.length - 1);
+    var index = count;
     // 获取对应的按钮
     var book = books[index];
     // 点击按钮
