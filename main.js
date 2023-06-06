@@ -114,7 +114,7 @@ function readBooks() {
     // 随机选择一本书籍并点击
     var book = chooseBook();
     // 随机生成一个时间值，介于60秒到120秒之间
-    var time = random(60, 120);
+    var time = random(60, 80);
     // 等待时间过去后，返回上一页
     sleep(time * 1000);
     back();
