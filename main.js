@@ -96,17 +96,21 @@ function readBooks() {
 
 // 定义一个函数，用于按顺序选择一个按钮并点击
 function chooseBook() {
-  // 获取当前的索引值，初始为0
-  var index = count;
-  // 获取对应的按钮
-  var book = text("阅读").find()[index];
-  // 判断按钮是否存在，如果不存在，就提示并退出程序
-  if (book == undefined) {
-    toast("没有找到可阅读的书籍");
+  // 获取所有带有“阅读”字样的按钮
+  var books = text("阅读").find();
+  // 判断是否有足够的书籍可供选择，如果没有，就提示并退出程序
+  if (books.length < 6) {
+    toast("没有找到足够的书籍");
     exit();
   }
-  // 获取按钮的父元素
-  book = book.parent();
+  // 如果有超过6个书籍，就只保留前6个
+  if (books.length > 6) {
+    books = books.slice(0, 6);
+  }
+  // 获取当前已阅读的书籍数量
+  var num = count + 1;
+  // 获取对应位置的按钮
+  var book = books[num - 1];
   // 点击按钮
   book.click();
   // 返回按钮
