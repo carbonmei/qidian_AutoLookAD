@@ -83,3 +83,55 @@ for (let index = 1; index < 11; index++) {
     toastLog("看视频结束: " + caption) 
     sleep(2000)
 }
+// 定义一个函数，用于阅读书籍
+function readBooks() {
+  // 视频看完后，点击带有“去完成”的按钮
+  var button = text("去完成").findOne();
+  if (button) {
+    button.click();
+  }
+
+  // 跳转到“任务书单”页面后，获取所有带有“阅读”字样的按钮
+  var books = text("阅读").find();
+
+  // 定义一个函数，用于随机选择一个按钮并点击
+  function chooseBook() {
+    // 随机生成一个索引值
+    var index = random(0, books.length - 1);
+    // 获取对应的按钮
+    var book = books[index];
+    // 点击按钮
+    book.click();
+    // 返回按钮
+    return book;
+  }
+
+  // 定义一个变量，用于记录已经阅读的书籍数量
+  var count = 0;
+
+  // 定义一个函数，用于阅读一本书籍一分钟以上，并返回
+  function readBook() {
+    // 随机选择一本书籍并点击
+    var book = chooseBook();
+    // 随机生成一个时间值，介于60秒到120秒之间
+    var time = random(60, 120);
+    // 等待时间过去后，返回上一页
+    sleep(time * 1000);
+    back();
+    // 增加已阅读的书籍数量
+    count++;
+    // 判断是否已经阅读了6本书籍，如果是，就结束程序，如果不是，就继续阅读下一本书籍
+    if (count == 6) {
+      toast("任务完成");
+      exit();
+    } else {
+      readBook();
+    }
+  }
+
+  // 开始阅读第一本书籍
+  readBook();
+}
+
+// 调用阅读书籍函数
+readBooks();
