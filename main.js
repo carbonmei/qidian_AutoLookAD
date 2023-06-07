@@ -83,65 +83,38 @@ for (let index = 1; index < 11; index++) {
     toastLog("看视频结束: " + caption) 
     sleep(2000)
 }
-// 定义一个函数，用于阅读书籍
-function readBooks() {
-  // 视频看完后，点击带有“去完成”的按钮
-  var button = text("去完成").findOne();
-  if (button) {
-    button.click();
-  }
-
-  // 跳转到“任务书单”页面后，获取所有带有“阅读”字样的按钮
-  var books = text("阅读").find();
-
-// 定义一个函数，用于按顺序选择一个按钮并点击
-function chooseBook() {
-  // 获取所有带有“阅读”字样的按钮
-  var books = text("阅读").find();
-  // 判断是否有足够的书籍可供选择，如果没有，就提示并退出程序
-  if (books.length < 6) {
-    toast("没有找到足够的书籍");
-    exit();
-  }
-  // 如果有超过6个书籍，就只保留前6个
-  if (books.length > 6) {
-    books = books.slice(0, 6);
-  }
-  // 获取当前已阅读的书籍数量
-  var num = count + 1;
-  // 获取对应位置的按钮
-  var book = books[num - 1];
-  // 点击按钮
-  book.click();
-  // 返回按钮
-  return book;
+// Click on the button with text "去完成"
+var completeButton = text("去完成").findOnce();
+if (completeButton) {
+    completeButton.click();
+    sleep(2000);
 }
-  // 定义一个变量，用于记录已经阅读的书籍数量
-  var count = 0;
 
-  // 定义一个函数，用于阅读一本书籍一分钟以上，并返回
-  function readBook() {
-    // 随机选择一本书籍并点击
-    var book = chooseBook();
-    // 随机生成一个时间值，介于60秒到120秒之间
-    var time = random(60, 80);
-    // 等待时间过去后，返回上一页
-    sleep(time * 1000);
-    back();
-    // 增加已阅读的书籍数量
-    count++;
-    // 判断是否已经阅读了6本书籍，如果是，就结束程序，如果不是，就继续阅读下一本书籍
-    if (count == 6) {
-      toast("任务完成");
-      exit();
-    } else {
-      readBook();
+// Wait for the "任务书单" page to load
+waitForActivity("com.qidian.QDReader.ui.activity.QDBrowserActivity");
+sleep(2000);
+
+// Select 6 books and read each for 60 seconds
+for (let i = 0; i < 6; i++) {
+    // Find the "阅读" button for the book and click it
+    var readButton = text("阅读").findOnce(i);
+    if (readButton) {
+        readButton.click();
+
+        // Read for 60 seconds
+        for (let j = 60; j > 0; j--) {
+            toastLog("剩余时间: " + j + " 秒");
+            sleep(1000);
+        }
+
+        back(); // Go back to the "任务书单" page
+        sleep(2000);
     }
-  }
 
-  // 开始阅读第一本书籍
-  readBook();
+    // Handle the "QDUICommonTipDialog" dialog if it appears
+    if (currentActivity() === "com.qd.ui.component.widget.dialog.QDUICommonTipDialog") {
+        // Click the "取消" button using the coordinates you provided
+        click(365, 1245);
+        sleep(2000);
+    }
 }
-
-// 调用阅读书籍函数
-readBooks();
