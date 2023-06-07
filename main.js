@@ -118,4 +118,11 @@ for (let i = 0; i < 6; i++) {
         sleep(2000);
     }
 }
+// Return to the welfare center page and click the "领取" button
+back();
+sleep(2000);
+var claimButton = text("领取").findOnce();
+if (claimButton) {
+    claimButton.click();
+}
 
