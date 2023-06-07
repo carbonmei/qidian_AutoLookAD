@@ -52,7 +52,7 @@ MyClick("福利中心")
 sleep(2000)
 
 //看视频1-8
-for (let index = 1; index < 11; index++) {
+for (let index = 1; index < 14; index++) {
     let caption = "第" + parseInt(index) +"个"   
     var meButton = undefined
     if(index>8){
@@ -71,11 +71,11 @@ for (let index = 1; index < 11; index++) {
     }    
     meButton.click()
     toastLog("看视频等待20s" + caption)
-    sleep(20000)
+    sleep(21000)
     Close()  
     sleep(2000)
-    toastLog("查找开心收下")
-    var meButton =text("开心收下").findOnce()
+    toastLog("查找我知道了")
+    var meButton =text("我知道了").findOnce()
     if (meButton != undefined){
         meButton = meButton.parent();
         meButton.click()
