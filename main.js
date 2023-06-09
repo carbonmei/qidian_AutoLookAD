@@ -102,7 +102,7 @@ for (let i = 0; i < 6; i++) {
         readButton.click();
 
         // Read for 60 seconds
-        for (let j = 60; j > 0; j--) {
+        for (let j = 62; j > 0; j--) {
             toastLog("剩余时间: " + j + " 秒");
             sleep(1000);
         }
@@ -121,7 +121,7 @@ for (let i = 0; i < 6; i++) {
 // Return to the welfare center page and click the "领取" button
 back();
 sleep(2000);
-var claimButton = text("领取").findOnce();
+var claimButton = text("领奖励").findOnce();
 if (claimButton) {
     claimButton.click();
 }
