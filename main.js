@@ -233,9 +233,9 @@ function completeTask() {
     var claimButton = text("领奖励").findOnce();
     if (claimButton) {
         claimButton.click();
-    }else{
-        st()
     }
+    st()
+    
 }
 
 
