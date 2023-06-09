@@ -129,7 +129,7 @@ for(let a = 1; a < 3; a++){
             fButton = textMatches("明天再来吧").findOnce();
             eButton = textMatches("已领取").findOnce();
             if(fButton != undefined && eButton != undefined){
-                st()
+               completeTask()
             }
         }
     }else{
@@ -162,7 +162,7 @@ function see(){
     if(eButton != undefined){
         see2()
     }else{
-        st()
+        completeTask()
     }
 }
 function see2(){
@@ -187,48 +187,55 @@ function see2(){
             lq()
         }
     }
-    st()
+    completeTask()
 }
-// Click on the button with text "去完成"
-var completeButton = text("去完成").findOnce();
-if (completeButton) {
-    completeButton.click();
+
+
+function completeTask() {
+    // Click on the button with text "去完成"
+    var completeButton = text("去完成").findOnce();
+    if (completeButton) {
+        completeButton.click();
+        sleep(2000);
+    }
+
+    // Wait for the "任务书单" page to load
+    waitForActivity("com.qidian.QDReader.ui.activity.QDBrowserActivity");
     sleep(2000);
-}
 
-// Wait for the "任务书单" page to load
-waitForActivity("com.qidian.QDReader.ui.activity.QDBrowserActivity");
-sleep(2000);
+    // Select 6 books and read each for 60 seconds
+    for (let i = 0; i < 6; i++) {
+        // Find the "阅读" button for the book and click it
+        var readButton = text("阅读").findOnce(i);
+        if (readButton) {
+            readButton.click();
 
-// Select 6 books and read each for 60 seconds
-for (let i = 0; i < 6; i++) {
-    // Find the "阅读" button for the book and click it
-    var readButton = text("阅读").findOnce(i);
-    if (readButton) {
-        readButton.click();
+            // Read for 60 seconds
+            for (let j = 62; j > 0; j--) {
+                toastLog("剩余时间: " + j + " 秒");
+                sleep(1000);
+            }
 
-        // Read for 60 seconds
-        for (let j = 62; j > 0; j--) {
-            toastLog("剩余时间: " + j + " 秒");
-            sleep(1000);
+            back(); // Go back to the "任务书单" page
+            sleep(2000);
         }
 
-        back(); // Go back to the "任务书单" page
-        sleep(2000);
+        // Handle the "QDUICommonTipDialog" dialog if it appears
+        if (currentActivity() === "com.qd.ui.component.widget.dialog.QDUICommonTipDialog") {
+            // Click the "取消" button using the coordinates you provided
+            click(365, 1245);
+            sleep(2000);
+        }
     }
+    // Return to the welfare center page and click the "领取" button
+    back();
+    sleep(2000);
+    var claimButton = text("领奖励").findOnce();
+    if (claimButton) {
+        claimButton.click();
+    }else{
+        st()
+    }
+}
 
-    // Handle the "QDUICommonTipDialog" dialog if it appears
-    if (currentActivity() === "com.qd.ui.component.widget.dialog.QDUICommonTipDialog") {
-        // Click the "取消" button using the coordinates you provided
-        click(365, 1245);
-        sleep(2000);
-    }
-}
-// Return to the welfare center page and click the "领取" button
-back();
-sleep(2000);
-var claimButton = text("领奖励").findOnce();
-if (claimButton) {
-    claimButton.click();
-}
 
